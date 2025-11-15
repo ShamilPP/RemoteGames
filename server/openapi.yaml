@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  title: Game Monitor API
+  version: 1.0.0
+  description: REST API for multiplayer microgames platform
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /auth/anon:
+    post:
+      summary: Create anonymous user
+      tags: [Auth]
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  userId:
+                    type: string
+                  name:
+                    type: string
+
+  /auth/register:
+    post:
+      summary: Register with email
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                name:
+                  type: string
+      responses:
+        '200':
+          description: User registered
+        '400':
+          description: Invalid input
+
+  /auth/login:
+    post:
+      summary: Login with email
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid credentials
+
+  /users/{id}:
+    get:
+      summary: Get user profile
+      tags: [Users]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User profile
+        '404':
+          description: User not found
+
+  /rooms:
+    post:
+      summary: Create room
+      tags: [Rooms]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [gameId]
+              properties:
+                gameId:
+                  type: string
+                maxPlayers:
+                  type: number
+      responses:
+        '200':
+          description: Room created
+    get:
+      summary: List user rooms
+      tags: [Rooms]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of rooms
+
+  /rooms/{roomId}:
+    get:
+      summary: Get room details
+      tags: [Rooms]
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Room details
+        '404':
+          description: Room not found
+
+  /rooms/{roomId}/join:
+    post:
+      summary: Join room
+      tags: [Rooms]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Joined room
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  controllerToken:
+                    type: string
+                  roomId:
+                    type: string
+
+  /rooms/{roomId}/leave:
+    post:
+      summary: Leave room
+      tags: [Rooms]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Left room
+
+  /rooms/{roomId}/start:
+    post:
+      summary: Start game
+      tags: [Rooms]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Game started
+
+  /games:
+    get:
+      summary: List available games
+      tags: [Games]
+      responses:
+        '200':
+          description: List of games
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    minPlayers:
+                      type: number
+                    maxPlayers:
+                      type: number
+
+  /games/{gameId}:
+    get:
+      summary: Get game details
+      tags: [Games]
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Game details
+        '404':
+          description: Game not found
+
+  /matches:
+    get:
+      summary: Get user match history
+      tags: [Matches]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Match history
+
+  /matches/{matchId}:
+    get:
+      summary: Get match details
+      tags: [Matches]
+      parameters:
+        - name: matchId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Match details
+
+  /matches/leaderboard/{gameId}:
+    get:
+      summary: Get leaderboard
+      tags: [Matches]
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Leaderboard
+
+  /logs/error:
+    post:
+      summary: Log client error
+      tags: [Logs]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                stack:
+                  type: string
+                url:
+                  type: string
+      responses:
+        '200':
+          description: Error logged
+
+  /health:
+    get:
+      summary: Health check
+      tags: [System]
+      responses:
+        '200':
+          description: Server is healthy
+
+securitySchemes:
+  bearerAuth:
+    type: http
+    scheme: bearer
+    bearerFormat: JWT
+

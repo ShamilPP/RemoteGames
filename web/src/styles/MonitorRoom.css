@@ -1,0 +1,43 @@
+.monitor-room {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.monitor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #2a2a2a;
+  border-radius: 12px;
+}
+
+.monitor-header h2 {
+  text-transform: capitalize;
+  font-size: 24px;
+}
+
+.join-code {
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #4a9eff;
+}
+
+.game-container {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.game-finished {
+  text-align: center;
+  padding: 40px;
+}
+
+.game-finished h3 {
+  font-size: 32px;
+  margin-bottom: 24px;
+}
+

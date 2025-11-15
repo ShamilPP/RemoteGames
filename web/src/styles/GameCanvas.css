@@ -1,0 +1,15 @@
+.game-canvas-container {
+  flex: 1;
+  min-width: 600px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 16/9;
+}
+
+.game-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
