@@ -1,33 +1,16 @@
-# Game Controller Mobile App
+# untitled
 
-Flutter mobile app for connecting as a game controller to the Game Monitor platform.
+A new Flutter project.
 
-## Setup
+## Getting Started
 
-1. Install Flutter: https://flutter.dev/docs/get-started/install
+This project is a starting point for a Flutter application.
 
-2. Install dependencies:
-```bash
-flutter pub get
-```
+A few resources to get you started if this is your first Flutter project:
 
-3. Update the API base URL in `lib/services/api_service.dart` if needed.
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-4. Run the app:
-```bash
-flutter run
-```
-
-## Features
-
-- Join rooms by code or QR scan
-- Two control modes:
-  - Button pad with joystick
-  - Tilt control using device accelerometer
-- Real-time connection status
-- Low-latency input transmission
-
-## Configuration
-
-Update the server URL in `lib/services/api_service.dart` and `lib/services/socket_service.dart` to match your server.
-
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
